@@ -4,12 +4,16 @@
 #
 #
 
+if [ -n "$DEBUG" -a "$DEBUG" = 1 ]; then
+  set -x
+fi
+
 if [ -z "$1" ]; then
   printf "You have to provide a site name!\n" >&2
   exit 1
 fi
 
-BASE_DIR="$HOME/sscmon-occi"
+BASE_DIR="$(readlink -m $(dirname $0))"
 OCCI_DIR="$BASE_DIR/helpers/occi"
 
 COMPUTE_ID=`$OCCI_DIR/create-for-site.sh "$1"`
@@ -45,8 +49,18 @@ if [ "x$IP_TYPE" = "xPRIVATE" ]; then
   if [ "$?" -ne 0 ] || [ -z "$COMPUTE_IP" ]; then
     printf "Couldn't get compute instance details, running clean-up!\n" >&2
     $OCCI_DIR/delete-for-site.sh "$1" "$COMPUTE_ID"
+    $OCCI_DIR/release-for-site.sh "$1" "$INTF_LINK"
     exit 3
   fi
 fi
 
+# VM instantiation successful
 printf "$COMPUTE_ID $COMPUTE_IP\n"
+
+# Release IP and delete VM unless requested
+if [ -z "$KEEP_VMS" -o "$KEEP_VMS" != 1 ]; then
+  if [ -n "$INTTF_LINK" ]; then
+    $OCCI_DIR/release-for-site.sh "$1" "$INTF_LINK"
+  fi
+  $OCCI_DIR/delete-for-site.sh "$1" "$COMPUTE_ID"
+fi

@@ -16,11 +16,6 @@ if [ -z "$1" ]; then
 fi
 
 if [ -z "$2" ]; then
-  printf "You have to provide compute URI!\n" >&2
-  exit 2
-fi
-
-if [ -z "$3" ]; then
   printf "You have to provide network ID!\n" >&2
   exit 3
 fi
@@ -35,4 +30,4 @@ fi
 
 occi --auth x509 --user-cred "$PROXY_PATH" --voms \
      --endpoint "$ENDPOINT" \
-     --action link --resource "$2" --link "${ENDPOINT%/}/network/$3"
+     --action delete --resource "$2"

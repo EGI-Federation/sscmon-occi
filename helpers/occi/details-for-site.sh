@@ -4,6 +4,10 @@
 #
 #
 
+if [ -n "$DEBUG" -a "$DEBUG" = 1 ]; then
+  set -x
+fi
+
 set -o pipefail
 
 if [ -z "$1" ]; then
@@ -16,8 +20,8 @@ if [ -z "$2" ]; then
   exit 2
 fi
 
-BASE_DIR="$HOME/sscmon-occi"
-PROXY_PATH="/tmp/x509up_u1000"
+BASE_DIR="$(readlink -m $(dirname $0))/../../"
+PROXY_PATH="$(voms-proxy-info -path)"
 ENDPOINT=`$BASE_DIR/helpers/appdb/get-endpoint-for-site.sh $1`
 if [ "$?" -ne 0 ]; then
   printf "Couldn't get an endpoint for $1!\n" >&2

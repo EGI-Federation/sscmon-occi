@@ -4,13 +4,17 @@
 #
 #
 
+if [ -n "$DEBUG" -a "$DEBUG" = 1 ]; then
+  set -x
+fi
+
 if [ -z "$1" ]; then
   printf "You have to provide a site name!\n" >&2
   exit 1
 fi
 
-BASE_DIR="$HOME/sscmon-occi"
-PROXY_PATH="/tmp/x509up_u1000"
+BASE_DIR="$(readlink -m $(dirname $0))/../../"
+PROXY_PATH="$(voms-proxy-info -path)"
 COMPUTE_NAME="my-first-compute-1"
 CONTEXT="$BASE_DIR/context/fc-context.yml"
 
