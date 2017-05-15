@@ -15,6 +15,7 @@
 * perl-xml-xpath (libxml-xpath-perl on Ubuntu): for xpath filtering of AppDB XML output
 * jq: for jq filtering of OCCI JSON output
 * occi, CAs and updated CRLs using fetch-crls: https://wiki.egi.eu/wiki/HOWTO11 
+* python-ipy: for parsing IP
 
 ## Quickly testing on all the sites
 
@@ -29,4 +30,25 @@ Script can be edited to automatically delete all found VMs, but use with care.
 
 ```
 for SITE in $(./list-sites.sh) ; do printf "Site $SITE\n" ; ./list-vms.sh "$SITE" ; printf "\n\n" ; done
+```
+
+## Debugging
+
+### Getting the raw XML from the AppDB
+
+```
+APPDB_URL='https://appdb-pi.egi.eu/rest/1.0/sites?listmode=details&flt=%2B%3Dsite.supports%3A1%20%2B%3Dsite.hasinstances%3A1%0A'
+curl -s -k "$APPDB_URL"
+```
+
+### Looking into Site BDII information
+
+* ldap-utils is required to provide ldapsearch command
+* Site BDII name can be found in the GocDB: https://goc.egi.eu/portal/
+
+```
+SITE_BDII='XXXX'
+ldapsearch -LLL -x -h $SITE_BDII -p 2170 -b o=glue objectClass=GLUE2Endpoint GLUE2EndpointURL
+ldapsearch -LLL -x -h $SITE_BDII -p 2170 -b o=glue '(|(objectClass=GLUE2ApplicationEnvironment)(objectClass=GLUE2ExecutionEnvironment))' GLUE2EntityName
+ldapsearch -LLL -x -h $SITE_BDII -p 2170 -b o=glue '(|(objectClass=GLUE2ApplicationEnvironment)(objectClass=GLUE2ExecutionEnvironment))' GLUE2EntityName | awk '/GLUE2EntityName/ {print $NF}'
 ```
