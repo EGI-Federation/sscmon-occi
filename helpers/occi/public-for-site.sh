@@ -23,7 +23,20 @@ if [ "$?" -ne 0 ]; then
   exit 2
 fi
 
-occi --auth x509 --user-cred "$PROXY_PATH" --voms \
-     --endpoint "$ENDPOINT" \
-     --action describe --resource network \
-     --output-format json_extended | jq -r '.[] | select(.["attributes"]["occi"]["core"]["id"] == "public" or .["attributes"]["occi"]["core"]["id"] == "PUBLIC" or .["attributes"]["occi"]["core"]["id"] == "floating" or .["attributes"]["occi"]["core"]["title"] == "public" or .["attributes"]["occi"]["core"]["title"] == "PUBLIC") | .["id"]'
+# FIXME first try to find an interface the ID set to PUBIC, public or floating
+INTIF=$(occi --auth x509 --user-cred "$PROXY_PATH" --voms \
+  --endpoint "$ENDPOINT" \
+  --action describe --resource network \
+  --output-format json_extended | jq -r \
+  '.[] | select(.["attributes"]["occi"]["core"]["id"] == "public" or .["attributes"]["occi"]["core"]["id"] == "PUBLIC" or .["attributes"]["occi"]["core"]["id"] == "floating") | .["id"]')
+
+# FIXME secondly try to find an interface the title set to PUBIC, public or floating
+if [-z "$INTIF" ]; then
+  INTIF=$(occi --auth x509 --user-cred "$PROXY_PATH" --voms \
+    --endpoint "$ENDPOINT" \
+    --action describe --resource network \
+    --output-format json_extended | jq -r \
+    '.[] | select(.["attributes"]["occi"]["core"]["title"] == "public" or .["attributes"]["occi"]["core"]["title"] == "PUBLIC" or .["attributes"]["occi"]["core"]["title"] == "floating") | .["id"]')
+fi
+
+printf "$INTIF\n"
