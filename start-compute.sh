@@ -49,8 +49,18 @@ if [ "x$IP_TYPE" = "xPRIVATE" ]; then
   if [ "$?" -ne 0 ] || [ -z "$COMPUTE_IP" ]; then
     printf "Couldn't get compute instance details, running clean-up!\n" >&2
     $OCCI_DIR/delete-for-site.sh "$1" "$COMPUTE_ID"
+    $OCCI_DIR/release-for-site.sh "$1" "$INTF_LINK"
     exit 3
   fi
 fi
 
+# VM instantiation successful
 printf "$COMPUTE_ID $COMPUTE_IP\n"
+
+# Release IP and delete VM unless requested
+if [ -z "$KEEP_VMS" -o $KEEP_VMS -ne 1 ]; then
+  if [ -n "$INTTF_LINK" ]; then
+    $OCCI_DIR/release-for-site.sh "$1" "$INTF_LINK"
+  fi
+  $OCCI_DIR/delete-for-site.sh "$1" "$COMPUTE_ID"
+fi
