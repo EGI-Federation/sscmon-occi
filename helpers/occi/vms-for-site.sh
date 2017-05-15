@@ -8,6 +8,7 @@ if [ -n "$DEBUG" -a "$DEBUG" = 1 ]; then
   set -x
 fi
 
+set -e
 set -o pipefail
 
 if [ -z "$1" ]; then
@@ -23,7 +24,8 @@ if [ "$?" -ne 0 ]; then
   exit 2
 fi
 
-occi --endpoint $endpoint --auth x509 --user-cred $proxy_path --voms \
+occi --auth x509 --user-cred "$PROXY_PATH" --voms \
+  --endpoint $ENDPOINT \
   --action describe --resource compute \
-  | grep -q -s -b 2 'title = my-first-compute-1' \
+  | grep -s -B 2 'title = my-first-compute-1' \
   | awk '/location/ {print $3}'
