@@ -15,6 +15,7 @@ fi
 
 BASE_DIR="$HOME/sscmon-occi"
 OCCI_DIR="$BASE_DIR/helpers/occi"
+PROXY_PATH="$(voms-proxy-info -path)"
 
 VMS=`$BASE_DIR/helpers/appdb/get-vms-for-site.sh $1`
 

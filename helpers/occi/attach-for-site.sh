@@ -26,7 +26,7 @@ if [ -z "$3" ]; then
 fi
 
 BASE_DIR="$HOME/sscmon-occi"
-PROXY_PATH="/tmp/x509up_u1000"
+PROXY_PATH="$(voms-proxy-info -path)"
 ENDPOINT=`$BASE_DIR/helpers/appdb/get-endpoint-for-site.sh $1`
 if [ "$?" -ne 0 ]; then
   printf "Couldn't get an endpoint for $1!\n" >&2

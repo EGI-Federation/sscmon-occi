@@ -14,7 +14,7 @@ if [ -z "$1" ]; then
 fi
 
 BASE_DIR="$HOME/sscmon-occi"
-PROXY_PATH="/tmp/x509up_u1000"
+PROXY_PATH="$(voms-proxy-info -path)"
 COMPUTE_NAME="my-first-compute-1"
 CONTEXT="$BASE_DIR/context/fc-context.yml"
 
