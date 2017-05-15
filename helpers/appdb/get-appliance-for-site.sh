@@ -4,6 +4,10 @@
 #
 #
 
+if [ -n "$DEBUG" -a $DEBUG -eq 1 ]; then
+  set -x
+fi
+
 set -o pipefail
 set -e
 

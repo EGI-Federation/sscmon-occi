@@ -4,6 +4,10 @@
 #
 #
 
+if [ -n "$DEBUG" -a $DEBUG -eq 1 ]; then
+  set -x
+fi
+
 if [ -z "$1" ]; then
   printf "You have to provide a site name!\n" >&2
   exit 1
