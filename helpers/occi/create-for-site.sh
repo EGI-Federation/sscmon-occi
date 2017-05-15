@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#
+#
+#
+
+if [ -z "$1" ]; then
+  printf "You have to provide a site name!\n" >&2
+  exit 1
+fi
+
+BASE_DIR="$HOME/sscmon-occi"
+PROXY_PATH="/tmp/x509up_u1000"
+COMPUTE_NAME="my-first-compute-1"
+CONTEXT="$BASE_DIR/context/fc-context.yml"
+
+ENDPOINT=`$BASE_DIR/helpers/appdb/get-endpoint-for-site.sh $1`
+if [ "$?" -ne 0 ]; then
+  printf "Couldn't get an endpoint for $1!\n" >&2
+  exit 2
+fi
+
+APPLIANCE=`$BASE_DIR/helpers/appdb/get-appliance-for-site.sh $1`
+if [ "$?" -ne 0 ]; then
+  printf "Couldn't get an appliance ID at $1!\n" >&2
+  exit 3
+fi
+
+SIZE=`$BASE_DIR/helpers/appdb/get-size-for-site.sh $1`
+if [ "$?" -ne 0 ]; then
+  printf "Couldn't get a size/flavor ID at $1!\n" >&2
+  exit 4
+fi
+
+occi --auth x509 --user-cred "$PROXY_PATH" --voms \
+     --endpoint "$ENDPOINT" \
+     --action create --resource compute \
+     --attribute occi.core.title="$COMPUTE_NAME" \
+     --mixin "$APPLIANCE" \
+     --mixin "$SIZE" \
+     --context user_data="file://$CONTEXT" \
+     --wait-for-active 360

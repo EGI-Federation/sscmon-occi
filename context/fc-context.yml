@@ -1,0 +1,8 @@
+#cloud-config
+users:
+  - name: clouduser
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock-passwd: true
+    ssh-import-id: clouduser
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDdn9gFM7k+/BsvA3itj42PUHm3oKtTC7sqhgSu4EawFAl9hOMIIr8p+DDB9wHhijS2H2I/VthTf7YwbXwr0HzxjQdhSvYp2NfSLWulEv8OlrURYHVpeqTbdrcReUqThk9hXQRgwRo/7HksUA0f9vhzuvuOW+LTUzMsQtd+pOWcRrA07PjR1L9ifeeq5Dq+OVoVb7q5uq4ERHXH574Ex062A0xH+zRqrDQSkDSfYko21GbubFaV6Mdlxk8spniqXN+kY0E7dSM68+M17i7ocdKt0ErrKzcD3kQIsL8XI2IBk+Y/HDNYxPz5bD/IQaGSxaX3z0MmS+xEtKnxK8r4j+3R sscmon@stoor7
