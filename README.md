@@ -1,6 +1,6 @@
 # Scripts and helpers to automatize testing of EGI FedCloud using occi
 
-This repository contains scripts that have been initially created by Boris Parak @arax.
+This repository contains scripts that have been initially created by [Boris Parak](https://github.com/arax).
 
 ## Overview
 
