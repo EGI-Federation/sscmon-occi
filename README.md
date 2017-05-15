@@ -17,6 +17,11 @@
 * occi, CAs and updated CRLs using fetch-crls: https://wiki.egi.eu/wiki/HOWTO11 
 * python-ipy: for parsing IP
 
+## Starting a VM on a site
+
+* `start-compute.sh` will create a VM with a public IP and having the following title set: `my-first-compute-1`.
+* Unless KEEP_VMS=1 was set the VM will be deleted.
+
 ## Quickly testing on all the sites
 
 ```
@@ -25,8 +30,10 @@ for SITE in $(./list-sites.sh) ; do printf "Site $SITE\n" ; ./start-compute.sh "
 
 ## Looking for leftover VM on all the sites
 
-This will look with VM having the following title set: `my-first-compute-1`.
+* `list-vms.sh` will look with VM having the following title set: `my-first-compute-1`.
 Script can be edited to automatically delete all found VMs, but use with care.
+
+* `clean-compute.sh` can also be used to delete a VM from a site.
 
 ```
 for SITE in $(./list-sites.sh) ; do printf "Site $SITE\n" ; ./list-vms.sh "$SITE" ; printf "\n\n" ; done
