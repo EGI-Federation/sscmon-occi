@@ -3,6 +3,7 @@
 ## Overview
 
 * Information about the sites is taken from the AppDB
+* list-sites.sh does not filter sites, some might not support the required VO
 * Interaction with the sites is done using OCCI
 * All unsuccessful deployment attempts are cleaned
 * By default all VM successfully instantiated are deleted, export `KEEP_VMS=1`
