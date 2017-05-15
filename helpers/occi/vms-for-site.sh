@@ -15,7 +15,7 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-BASE_DIR="$HOME/sscmon-occi"
+BASE_DIR="$(readlink -m $(dirname $0))/../../"
 PROXY_PATH="$(voms-proxy-info -path)"
 ENDPOINT=`$BASE_DIR/helpers/appdb/get-endpoint-for-site.sh $1`
 if [ "$?" -ne 0 ]; then

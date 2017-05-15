@@ -13,7 +13,7 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-BASE_DIR="$HOME/sscmon-occi"
+BASE_DIR="$(readlink -m $(dirname $0))"
 OCCI_DIR="$BASE_DIR/helpers/occi"
 
 COMPUTE_ID=`$OCCI_DIR/create-for-site.sh "$1"`

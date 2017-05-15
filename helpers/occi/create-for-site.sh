@@ -13,7 +13,7 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-BASE_DIR="$HOME/sscmon-occi"
+BASE_DIR="$(readlink -m $(dirname $0))/../../"
 PROXY_PATH="$(voms-proxy-info -path)"
 COMPUTE_NAME="my-first-compute-1"
 CONTEXT="$BASE_DIR/context/fc-context.yml"

@@ -13,11 +13,11 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-BASE_DIR="$HOME/sscmon-occi"
+BASE_DIR="$(readlink -m $(dirname $0))"
 OCCI_DIR="$BASE_DIR/helpers/occi"
 PROXY_PATH="$(voms-proxy-info -path)"
 
-VMS=`$BASE_DIR/helpers/appdb/get-vms-for-site.sh $1`
+VMS=`$OCCI_DIR/vms-for-site.sh $1`
 
 if [ -n "$VMS" ]; then
   for VM in "$VMS"; do
