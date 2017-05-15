@@ -17,6 +17,10 @@
 * occi, CAs and updated CRLs using fetch-crls: https://wiki.egi.eu/wiki/HOWTO11 
 * python-ipy: for parsing IP
 
+## Contextualization
+
+Create `context/fc-context.yml` using `context/fc-context.yml.template` (be sure to set your ssh key).
+
 ## Starting a VM on a site
 
 * `start-compute.sh` will create a VM with a public IP and having the following title set: `my-first-compute-1`.
