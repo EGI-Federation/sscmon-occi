@@ -4,7 +4,7 @@
 #
 #
 
-if [ -n "$DEBUG" -a $DEBUG -eq 1 ]; then
+if [ -n "$DEBUG" -a "$DEBUG" = 1 ]; then
   set -x
 fi
 

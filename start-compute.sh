@@ -4,7 +4,7 @@
 #
 #
 
-if [ -n "$DEBUG" -a $DEBUG -eq 1 ]; then
+if [ -n "$DEBUG" -a "$DEBUG" = 1 ]; then
   set -x
 fi
 
@@ -58,7 +58,7 @@ fi
 printf "$COMPUTE_ID $COMPUTE_IP\n"
 
 # Release IP and delete VM unless requested
-if [ -z "$KEEP_VMS" -o $KEEP_VMS -ne 1 ]; then
+if [ -z "$KEEP_VMS" -o "$KEEP_VMS" != 1 ]; then
   if [ -n "$INTTF_LINK" ]; then
     $OCCI_DIR/release-for-site.sh "$1" "$INTF_LINK"
   fi
