@@ -28,6 +28,23 @@ if [ "$?" -ne 0 ]; then
   exit 4
 fi
 
+LINK_TARGET=$(occi --auth x509 --user-cred "$PROXY_PATH" --voms \
+                   --endpoint "$ENDPOINT" \
+                   --action describe --resource "$2" \
+                   --output-format json_extended | jq -r .[0].target)
+
+LINK_TARGET_KIND=$(occi --auth x509 --user-cred "$PROXY_PATH" --voms \
+                   --endpoint "$ENDPOINT" \
+                   --action describe --resource "$LINK_TARGET" \
+                   --output-format json_extended | jq -r .[0].kind)
+
+
 occi --auth x509 --user-cred "$PROXY_PATH" --voms \
      --endpoint "$ENDPOINT" \
      --action delete --resource "$2"
+
+if [ "$LINK_TARGET_KIND" == "http://schemas.ogf.org/occi/infrastructure#ipreservation" ]; then
+  occi --auth x509 --user-cred "$PROXY_PATH" --voms \
+       --endpoint "$ENDPOINT" \
+       --action delete --resource "$LINK_TARGET"
+fi
