@@ -59,7 +59,7 @@ printf "$COMPUTE_ID $COMPUTE_IP\n"
 
 # Release IP and delete VM unless requested
 if [ -z "$KEEP_VMS" -o "$KEEP_VMS" != 1 ]; then
-  if [ -n "$INTTF_LINK" ]; then
+  if [ -n "$INTF_LINK" ]; then
     $OCCI_DIR/release-for-site.sh "$1" "$INTF_LINK"
   fi
   $OCCI_DIR/delete-for-site.sh "$1" "$COMPUTE_ID"
