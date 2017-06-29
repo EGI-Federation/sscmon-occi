@@ -25,8 +25,27 @@ Create `context/fc-context.yml` using `context/fc-context.yml.template` (be sure
 
 ## Starting a VM on a site
 
-* `start-compute.sh` will create a VM with a public IP and having the following title set: `my-first-compute-1`.
-* Unless KEEP_VMS=1 was set the VM will be deleted.
+* `start-compute.sh` will create a VM with a public IP and having the title set
+  to `my-first-compute-1` unless `COMPUTE_NAME` was set to a custome title.
+* Unless `KEEP_VMS=1` was set the VM will be deleted.
+
+```sh
+./start-compute.sh <SITE_NAME>
+KEEP_VMS=1 ./start-compute.sh <SITE_NAME>
+KEEP_VMS=1 COMPUTE_NAME=my-custom-test-vm ./start-compute.sh <SITE_NAME>
+```
+
+You can export `KEEP_VMS` and `COMPUTE_NAME` to use them for a whole session.
+
+```sh
+export KEEP_VMS=1
+export COMPUTE_NAME=my-custom-test-vm
+./start-compute.sh <SITE_NAME>
+./list-vms.sh <SITE_NAME>
+```
+
+It is recommended to set a custom `COMPUTE_NAME` to allow to easily
+search and differentiate VMs from those launched by other users.
 
 ## Quickly testing on all the sites
 
@@ -36,7 +55,8 @@ for SITE in $(./list-sites.sh) ; do printf "Site $SITE\n" ; ./start-compute.sh "
 
 ## Looking for leftover VM on all the sites
 
-* `list-vms.sh` will look with VM having the following title set: `my-first-compute-1`.
+* `list-vms.sh` will look with VM having the title set to `COMPUTE_VM` or will
+  default to `my-first-compute-1`.
 Script can be edited to automatically delete all found VMs, but use with care.
 
 * `clean-compute.sh` can also be used to delete a VM from a site.

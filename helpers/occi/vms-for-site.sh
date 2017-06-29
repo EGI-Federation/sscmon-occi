@@ -16,6 +16,7 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+COMPUTE_NAME="${COMPUTE_NAME:=my-first-compute-1}"
 BASE_DIR="$(readlink -m $(dirname $0))/../../"
 PROXY_PATH="$(voms-proxy-info -path)"
 ENDPOINT=`$BASE_DIR/helpers/appdb/get-endpoint-for-site.sh $1`
@@ -27,5 +28,5 @@ fi
 occi --auth x509 --user-cred "$PROXY_PATH" --voms \
   --endpoint $ENDPOINT \
   --action describe --resource compute \
-  | grep -s -B 2 'title = my-first-compute-1' \
+  | grep -s -B 2 "title = $COMPUTE_NAME" \
   | awk '/location/ {print $3}'
