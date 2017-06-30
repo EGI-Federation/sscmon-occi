@@ -49,7 +49,11 @@ search and differentiate VMs from those launched by other users.
 
 ## Quickly testing on all the sites
 
-```
+The provided `test-sites.sh` script can be used to ease the testing of all the sites.
+
+```sh
+./test-sites.sh
+# or manually
 for SITE in $(./list-sites.sh) ; do printf "Site $SITE\n" ; ./start-compute.sh "$SITE" ; printf "\n\n" ; done
 ```
 
