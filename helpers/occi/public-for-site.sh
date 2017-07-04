@@ -23,20 +23,21 @@ if [ "$?" -ne 0 ]; then
   exit 2
 fi
 
-# FIXME first try to find an interface the ID set to PUBLIC, public or floating
+# With OOI network should have: id == 'PUBLIC'
+# With deprecated OCCI-OS network should have: id == '/network/public'
 INTIF=$(occi --auth x509 --user-cred "$PROXY_PATH" --voms \
   --endpoint "$ENDPOINT" \
   --action describe --resource network \
   --output-format json_extended | jq -r \
-  '.[] | select(.["attributes"]["occi"]["core"]["id"] == "public" or .["attributes"]["occi"]["core"]["id"] == "PUBLIC" or .["attributes"]["occi"]["core"]["id"] == "floating") | .["id"]')
+  '.[] | select(.["attributes"]["occi"]["core"]["id"] == "PUBLIC" or .["attributes"]["occi"]["core"]["id"] == "/network/public") | .["id"]')
 
-# FIXME secondly try to find an interface the title set to PUBLIC, public or floating
+# With OpenNebula network should have: title == 'public'
 if [ -z "$INTIF" ]; then
   INTIF=$(occi --auth x509 --user-cred "$PROXY_PATH" --voms \
     --endpoint "$ENDPOINT" \
     --action describe --resource network \
     --output-format json_extended | jq -r \
-    '.[] | select(.["attributes"]["occi"]["core"]["title"] == "public" or .["attributes"]["occi"]["core"]["title"] == "PUBLIC" or .["attributes"]["occi"]["core"]["title"] == "floating") | .["id"]')
+    '.[] | select(.["attributes"]["occi"]["core"]["title"] == "public") | .["id"]')
 fi
 
 printf "$INTIF\n"
