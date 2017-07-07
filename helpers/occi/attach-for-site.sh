@@ -33,6 +33,7 @@ if [ "$?" -ne 0 ]; then
   exit 4
 fi
 
+# Remove OCCI-OS hardcored /network/ prefix
 occi --auth x509 --user-cred "$PROXY_PATH" --voms \
      --endpoint "$ENDPOINT" \
-     --action link --resource "$2" --link "${ENDPOINT%/}/network/$3"
+     --action link --resource "$2" --link "${ENDPOINT%/}/network/${3#/network/}"
