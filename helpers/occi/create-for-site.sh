@@ -18,6 +18,11 @@ PROXY_PATH="$(voms-proxy-info -path)"
 COMPUTE_NAME="${COMPUTE_NAME:=my-first-compute-1}"
 CONTEXT="$BASE_DIR/context/fc-context.yml"
 
+if [ ! -f "$CONTEXT" ]; then
+  printf "$CONTEXT is missing, please ensure it exists!\n" >&2
+  exit 2
+fi
+
 ENDPOINT=`$BASE_DIR/helpers/appdb/get-endpoint-for-site.sh $1`
 if [ "$?" -ne 0 ]; then
   printf "Couldn't get an endpoint for $1!\n" >&2
