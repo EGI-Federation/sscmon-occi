@@ -15,7 +15,7 @@ fi
 
 BASE_DIR="$(readlink -m $(dirname $0))/../../"
 PROXY_PATH="$(voms-proxy-info -path)"
-COMPUTE_NAME="${COMPUTE_NAME:=my-first-compute-1}"
+COMPUTE_NAME="${COMPUTE_NAME:=my-first-compute-1-$(whoami)-$(hostname)}"
 CONTEXT="$BASE_DIR/context/fc-context.yml"
 
 if [ ! -f "$CONTEXT" ]; then

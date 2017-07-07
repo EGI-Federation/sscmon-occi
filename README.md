@@ -26,7 +26,7 @@ Create `context/fc-context.yml` using `context/fc-context.yml.template` (be sure
 ## Starting a VM on a site
 
 * `start-compute.sh` will create a VM with a public IP and having the title set
-  to `my-first-compute-1` unless `COMPUTE_NAME` was set to a custome title.
+  to `my-first-compute-1-$(whoami)-$(hostname)` unless `COMPUTE_NAME` was set to a custome title.
 * Unless `KEEP_VMS=1` was set the VM will be deleted.
 
 ```sh
