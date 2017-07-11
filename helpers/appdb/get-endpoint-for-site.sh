@@ -19,7 +19,7 @@ fi
 XPATH_BIN='xpath'
 APPDB_URL='https://appdb-pi.egi.eu/rest/1.0/sites?listmode=details&flt=%2B%3Dsite.supports%3A1%20%2B%3Dsite.hasinstances%3A1%0A'
 
-XPATH_SELECTOR="/appdb:appdb/appdb:site[contains(@infrastructure, 'Production') and contains(@status, 'Certified') and contains(@name, \"$1\")]/site:service/siteservice:occi_endpoint_url/text()"
+XPATH_SELECTOR="/appdb:appdb/appdb:site[contains(@infrastructure, 'Production') and contains(@status, 'Certified') and contains(@name, \"$1\")]/site:service[contains(@service_status, 'OK')]/siteservice:occi_endpoint_url/text()"
 
 ENDPOINTS=`curl -s -k "$APPDB_URL" | $XPATH_BIN -q -e "$XPATH_SELECTOR" 2> /dev/null`
 if [ -z "$ENDPOINTS" ]; then
