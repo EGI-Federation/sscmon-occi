@@ -22,7 +22,7 @@ VO_NAME='fedcloud.egi.eu'
 #APPDB_AID='c22f717b-1a4d-4f75-a547-f6d8ae368c77' # CentOS 7 for fedcloud.egi.eu
 APPDB_AID='6a532a8f-ba71-4c5c-99e9-ac1cfe467708' # CentOS 6 for fedcloud.egi.eu https://appdb.egi.eu/store/vappliance/egi.centos.6
 
-XPATH_SELECTOR="string(/appdb:appdb/appdb:site[contains(@infrastructure, \"Production\") and contains(@status, \"Certified\") and contains(@name, \"$1\")]/site:service[contains(@type, \"occi\")]/siteservice:image[contains(@identifier, \"$APPDB_AID\")]/siteservice:occi/vo:vo[contains(@name, \"$VO_NAME\")]/../@id)"
+XPATH_SELECTOR="string(/appdb:appdb/appdb:site[contains(@infrastructure, \"Production\") and contains(@status, \"Certified\") and contains(@name, \"$1\")]/site:service[contains(@type, \"occi\") and contains(@service_status, 'OK')]/siteservice:image[contains(@identifier, \"$APPDB_AID\")]/siteservice:occi/vo:vo[contains(@name, \"$VO_NAME\")]/../@id)"
 
 APPL_ID=`curl -s -k "$APPDB_URL" | $XPATH_BIN -q -e "$XPATH_SELECTOR" 2> /dev/null | head -n 1`
 if [ -z "$APPL_ID" ]; then
