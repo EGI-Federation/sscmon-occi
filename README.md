@@ -143,18 +143,36 @@ curl -s -k "$APPDB_URL"
 
 * ldap-utils or similar is required to provide `ldapsearch` command
 * BDII are mainly LDAP directories, so any LDAP client tool can be used
+  * On Windows one can use http://ldapadmin.org/
 * Site BDII names can be found in the [GocDB](https://goc.egi.eu/portal/)
 * Top BDII is `ldap://lcg-bdii.cern.ch:2170` and aggregates all the information
   from the Site BDIIs.
 
 ```sh
 SITE_BDII='XXXX'
-ldapsearch -LLL -x -h $SITE_BDII -p 2170 -b o=glue objectClass=GLUE2ComputingEndpoint 
+# All endpoints
 ldapsearch -LLL -x -h $SITE_BDII -p 2170 -b o=glue objectClass=GLUE2Endpoint GLUE2EndpointURL
+# All Computing endpoints
+ldapsearch -LLL -x -h $SITE_BDII -p 2170 -b o=glue objectClass=GLUE2ComputingEndpoint
+# OCCI computing endpoints
+ldapsearch -LLL -x -h $SITE_BDII -p 2170 -b o=glue '(&(objectClass=GLUE2ComputingEndpoint)(GLUE2EndpointInterfaceName=OCCI))' GLUE2EndpointURL
+# OS Templates
+ldapsearch -LLL -x -h $SITE_BDII -p 2170 -b o=glue 'objectClass=GLUE2ApplicationEnvironment'
+# Resources templates
+ldapsearch -LLL -x -h $SITE_BDII -p 2170 -b o=glue 'objectClass=GLUE2ExecutionEnvironment'
+# IDs of OS and resources templates
 ldapsearch -LLL -x -h $SITE_BDII -p 2170 -b o=glue '(|(objectClass=GLUE2ApplicationEnvironment)(objectClass=GLUE2ExecutionEnvironment))' GLUE2EntityName
 ldapsearch -LLL -x -h $SITE_BDII -p 2170 -b o=glue '(|(objectClass=GLUE2ApplicationEnvironment)(objectClass=GLUE2ExecutionEnvironment))' GLUE2EntityName | awk '/GLUE2EntityName/ {print $NF}'
-# Replace SITENAME by the name of the site
+```
+
+The `Tob BDII` should contain all the information from the `Site BDII`, in the
+following queries replace SITENAME by the name of the site.
+
+```sh
+# Find all the information about a site (can be very verbose)
 ldapsearch -LLL -x -H ldap://lcg-bdii.cern.ch:2170 -b GLUE2DomainID=SITENAME,GLUE2GroupID=grid,o=glue
+# Find all the OCCI endpoints of a specific site in the Tob BDII
+ldapsearch -LLL -x -H ldap://lcg-bdii.cern.ch:2170 -b GLUE2DomainID=SITENAME,GLUE2GroupID=grid,o=glue '(&(objectClass=GLUE2ComputingEndpoint)(GLUE2EndpointInterfaceName=OCCI))'
 ```
 
 ### Using OpenStack native CLI
