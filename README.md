@@ -7,7 +7,7 @@ This repository contains scripts that have been initially created by [Boris Para
 * Information about the sites is taken from the AppDB
   * AppDB gets information from GocDB and from the Top BDII gathering information from all the Site BDIIs
   * Endpoints that are not OK in [ARGO](http://argo.egi.eu/lavoisier/status_report-site?report=Critical&Fedcloud=true&accept=html) are not used
-* `list-sites.sh` does not filter sites, some might not support a specific VO
+* `list-sites.sh` lists sites supporting the VO returned by `voms-proxy-info -vo`
 * Interaction with the sites is done using OCCI
 * All unsuccessful deployment attempts are cleaned
 * By default all VM successfully instantiated are deleted, set `KEEP_VMS=1`
