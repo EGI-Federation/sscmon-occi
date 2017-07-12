@@ -34,6 +34,22 @@ if [ "$?" -ne 0 ]; then
 fi
 
 # Remove OCCI-OS hardcored /network/ prefix
-occi --auth x509 --user-cred "$PROXY_PATH" --voms \
+RESULT=$(occi --auth x509 --user-cred "$PROXY_PATH" --voms \
      --endpoint "$ENDPOINT" \
-     --action link --resource "$2" --link "${ENDPOINT%/}/network/${3#/network/}"
+     --action link --resource "$2" --link "${ENDPOINT%/}/network/${3#/network/}" 2>&1)
+
+if [ $? -eq 0 ]; then
+  printf "$RESULT\n"
+else
+  if printf "$RESULT" | grep -q 'Floating IP pool not found'; then
+    # For some sites it is required to specify the mixin
+    occi --auth x509 --user-cred "$PROXY_PATH" --voms \
+      --endpoint "$ENDPOINT" \
+      --action link --resource "$2" \
+      --link "${ENDPOINT%/}/network/${3#/network/}" \
+      --mixin 'http://schemas.openstack.org/network/floatingippool#provider'
+  else
+    printf "$RESULT\n"
+    exit 5
+  fi
+fi
