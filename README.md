@@ -63,16 +63,23 @@ the results.
 
 ## Looking for leftover VMs on all the sites
 
-* `list-vms.sh` will look for VM having the title set to `COMPUTE_VM` or will
-  default to `my-first-compute-1-$(whoami)-$(hostname)`.
+* `list-all-vms.sh` will list all the running VMs from all the sites,
+  displaying minimal information about them.
+* `list-vms.sh` will look for VM having the title set to the value of
+  `COMPUTE_VM` or will default to `my-first-compute-1-$(whoami)-$(hostname)`.
 
-Script can be edited to automatically delete all found VMs, but please consider
-doing this with care.
+`list-vms.sh` script can be edited to automatically delete all found VMs, but
+please consider doing this with care.
 
 * `clean-compute.sh` can be used to delete a VM from a site.
 
 ```sh
+# Display all VMs, unfiltered
+./list-all-vms.sh
+# Display title-filtered VMs
 for SITE in $(./list-sites.sh); do printf "Site $SITE\n"; ./list-vms.sh "$SITE"; printf "\n\n"; done
+# Delete one VM from a site
+./clean-compute.sh <SITE_NAME> <VM_URL>
 ```
 
 ## Debugging
