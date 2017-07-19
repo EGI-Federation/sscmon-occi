@@ -27,6 +27,6 @@ for SITE in $SITES; do
   else
     occi -X -e $ENDPOINT -x $X509_USER_PROXY -n x509 \
       -a describe -r compute \
-      | grep -C 2 '^occi.core.id' 
+      | grep -E '^(>> location:|occi.core.id|occi.core.title|occi.compute.hostname)'
   fi
 done
